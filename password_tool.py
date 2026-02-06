@@ -50,8 +50,69 @@ def check_password_strength(password):
     
     Hint: Use .isdigit(), .isupper(), .islower() and string.punctuation
     """
-    # TODO: Implement this function
-    pass
+    res = {}
+    score = 0
+    # check password length
+    if len(password) >= 8:
+        score += 20
+    if len(password) >= 12:
+        score += 10
+    print(score)
+
+    # Has number
+    for char in password:
+        if char.isdigit():
+            score = score + 20
+            break
+        else:
+            continue
+    
+    # Has upper case
+    for char in password:
+        if char.isupper():
+            score = score + 20
+            break
+        else:
+            continue
+
+    # Has lower case
+    for char in password:
+        if char.islower():
+            score = score + 20
+            break
+        else:
+            continue
+    
+    # Has special char
+    special_chars = ["!","@","#","$","%"]
+
+    for char in password:
+        if char in special_chars:
+            score = score + 20
+            break
+        else:
+            continue
+    
+    # Not in common list
+    if password not in COMMON_PASSWORDS:
+        score = score + 10
+
+
+    res["password"] = password
+    res["score"] = score
+    res["feedback"] = ""
+    res["strength"] = ""
+    
+    if 0 <= score <= 39:
+        res["strength"] = "Weak"
+    if 40 <= score <= 69:
+        res["strength"] = "Medium"
+    if 70 <= score:
+        res["strength"] = "Strong"
+
+    
+    
+    return res
 
 
 # ============================================
@@ -82,8 +143,17 @@ def generate_password(length=12, use_special=True):
     Hint: Use string.ascii_uppercase, string.ascii_lowercase, 
           string.digits, and random.choice()
     """
-    # TODO: Implement this function
-    pass
+    if length < 8:
+        length = 8
+
+    chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
+    if use_special:
+        chars += string.punctuation
+
+    random_password = "".join(random.choice(chars) for _ in range(length))
+
+    return random_password
+
 
 
 # ============================================
